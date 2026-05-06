@@ -28,7 +28,7 @@ git clone https://github.com/msaravanj/HeatBoardGame.git
 4. Pokreni:
 
 ```
-Main.java
+GameApplication.java
 ```
 
 ## 🎯 Gameplay
