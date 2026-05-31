@@ -1,7 +1,10 @@
 package hr.tvz.game.heatgame.model;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class Car {
 
     private String name;

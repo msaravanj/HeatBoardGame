@@ -1,5 +1,8 @@
 package hr.tvz.game.heatgame.model;
 
+import lombok.Data;
+
+@Data
 public class Gearbox {
 
     private int currentGear;
