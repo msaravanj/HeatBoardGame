@@ -10,8 +10,13 @@ public class GameApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        ScreenManager.setStage(stage);
-        ScreenManager.loadScreens();
-        ScreenManager.switchScreen(ScreenType.MAIN_MENU);
+        ScreenManager screenManager =
+                ScreenManager.getInstance();
+
+        screenManager.setStage(stage);
+        screenManager.loadScreens();
+        screenManager.switchScreen(ScreenType.MAIN_MENU);
+
+        stage.setTitle("Heat: Pedal to the Metal");
     }
 }
