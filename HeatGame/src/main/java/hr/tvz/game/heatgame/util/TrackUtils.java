@@ -165,7 +165,8 @@ public class TrackUtils {
 
          double nx = -dy;
          double ny = dx;
-         if (separatorCounter == 8) {
+
+         if (separatorCounter == 8 || separatorCounter == 55) {
              gc.setLineWidth(5);
              gc.strokeLine(point.getX() - nx * FIELD_WIDTH, point.getY() - ny * FIELD_WIDTH,
                      point.getX() + nx * FIELD_WIDTH, point.getY() + ny * FIELD_WIDTH

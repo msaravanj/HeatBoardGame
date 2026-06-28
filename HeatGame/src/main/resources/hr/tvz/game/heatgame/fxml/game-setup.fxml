@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.game.heatgame.ui.controllers.GameSetupController">
+   <children>
+      <Button fx:id="startGameButton" layoutX="546.0" layoutY="613.0" mnemonicParsing="false" onAction="#onStartGameButtonClick" style="-fx-background-color: GREEN;" text="START GAME">
+         <font>
+            <Font name="Ubuntu Mono" size="32.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelButton" layoutX="580.0" layoutY="682.0" mnemonicParsing="false" onAction="#onCancelButtonClick" style="-fx-background-color: red;" text="CANCEL">
+         <font>
+            <Font name="Ubuntu Mono" size="32.0" />
+         </font>
+      </Button>
+      <Label layoutX="560.0" layoutY="53.0" text="GAME SETUP">
+         <font>
+            <Font name="Ubuntu Mono" size="48.0" />
+         </font>
+      </Label>
+      <Label layoutX="560.0" layoutY="153.0" text="PLAYER NAME">
+         <font>
+            <Font name="Ubuntu Mono" size="32.0" />
+         </font>
+      </Label>
+      <TextField fx:id="playerNameField" layoutX="560.0" layoutY="192.0" prefHeight="38.0" prefWidth="180.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </TextField>
+      <ChoiceBox fx:id="choiceColorBox" layoutX="560.0" layoutY="310.0" prefHeight="40.0" prefWidth="180.0" />
+      <Label layoutX="560.0" layoutY="267.0" text="CAR COLOR">
+         <font>
+            <Font name="Ubuntu Mono" size="32.0" />
+         </font>
+      </Label>
+      <Label layoutX="560.0" layoutY="383.0" text="NUMBER OF PLAYERS">
+         <font>
+            <Font name="Ubuntu Mono" size="32.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="choiceNumberOfPlayersBox" layoutX="560.0" layoutY="425.0" prefHeight="40.0" prefWidth="180.0" />
+   </children>
+</AnchorPane>

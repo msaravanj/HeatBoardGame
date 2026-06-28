@@ -5,7 +5,6 @@ import hr.tvz.game.heatgame.ui.ScreenManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,8 +22,8 @@ public class MainController implements Initializable {
     private Button loadGameButton;
 
     @FXML
-    private void onNewGameButtonClick() throws IOException {
-        ScreenManager.switchScreen(ScreenType.GAME);
+    private void onNewGameButtonClick(){
+        ScreenManager.switchScreen(ScreenType.GAME_SETUP);
     }
 
 

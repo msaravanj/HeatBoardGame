@@ -3,6 +3,7 @@ package hr.tvz.game.heatgame.ui.controllers;
 import hr.tvz.game.heatgame.enums.CarColor;
 import hr.tvz.game.heatgame.model.Car;
 import hr.tvz.game.heatgame.model.TrackPoint;
+import hr.tvz.game.heatgame.model.GameData;
 import hr.tvz.game.heatgame.util.TrackUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,12 +26,13 @@ public class GameController implements Initializable {
     @FXML
     private Canvas canvas;
 
+    private GameData gameData;
+
     private List<Car> cars;
 
     private List<TrackPoint> trackPoints;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void refresh() {
         if (canvas == null) {
             return;
         }
@@ -49,50 +51,42 @@ public class GameController implements Initializable {
 
         TrackUtils.drawTrack(gc);
 
-        cars = new ArrayList<>();
-        cars.add(new Car("Player 1", CarColor.RED));
-        cars.add(new Car("Player 2", CarColor.YELLOW));
-        cars.add(new Car("Player 3", CarColor.BLUE));
-        cars.add(new Car("Player 4", CarColor.GREEN));
-        cars.add(new Car("Player 5", CarColor.ORANGE));
-        cars.add(new Car("Player 6", CarColor.PURPLE));
+        gameData = GameData.getInstance();
+        cars = gameData.getCars() != null ? gameData.getCars() : new ArrayList<>();
 
-        // Load car images
         Map<CarColor, Image> carImages = new HashMap<>();
         for (CarColor color : CarColor.values()) {
             carImages.put(color, new Image(getClass().getResourceAsStream(color.path)));
         }
 
-         // draw cars on the starting line (2 cars per field, on the last fields)
-         List<TrackPoint> points = TrackUtils.getFields();
+        List<TrackPoint> points = TrackUtils.getFields();
 
-         for (int i = 0; i < cars.size(); i++) {
-              Car car = cars.get(i);
-              Image carImage = carImages.get(car.getColor());
+        for (int i = 0; i < cars.size(); i++) {
+            Car car = cars.get(i);
+            Image carImage = carImages.get(car.getColor());
+            int fieldIndex = 46 - (i / 2);
+            int positionInField = i % 2;
 
-              // Place 2 cars per field, starting from the last field (46)
-              int fieldIndex = 46 - (i / 2);  // Determines which field (46 or 45)
-              int positionInField = i % 2;    // Determines position within the field (0 or 1)
+            TrackPoint basePoint = points.get(fieldIndex);
+            double x = basePoint.getX();
+            double y = basePoint.getY();
 
-              TrackPoint basePoint = points.get(fieldIndex);
-              double x = basePoint.getX();
-              double y = basePoint.getY();
+            if (positionInField == 0) {
+                y -= 45;
+            } else {
+                y -= 5;
+            }
 
-              // Offset the cars vertically according to their position in the field
-              if (positionInField == 0) {
-                  y -= 45;   // First car offset
-              } else {
-                  y -= 5;  // Second car offset
-              }
-
-              gc.save();
-              gc.translate(x, y);
-              gc.rotate(90);
-              gc.drawImage(carImage, 0, 0, 50, 50);
-              gc.restore();
-          }
+            gc.save();
+            gc.translate(x, y);
+            gc.rotate(90);
+            gc.drawImage(carImage, 0, 0, 50, 50);
+            gc.restore();
+        }
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        refresh();
+    }
 }
-
-
