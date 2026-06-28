@@ -1,5 +1,6 @@
 package hr.tvz.game.heatgame.model;
 
+import hr.tvz.game.heatgame.enums.CarColor;
 import lombok.Data;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public class Car {
 
     private String name;
-    private String color;
+    private CarColor color;
     private int speed;
     private int trackPosition;
 
@@ -19,4 +20,10 @@ public class Car {
     private List<StressCard> stressCards;
     private List<Card> activeDeck;
 
+    public Car(String name, CarColor color){
+        this.name = name;
+        this.color = color;
+        speed = 0;
+        trackPosition = 0;
+    }
 }
