@@ -64,6 +64,7 @@ public class GameSetupController implements Initializable {
         GameData.getInstance().setCars(cars);
         GameData.getInstance().setPlayerName(playerName);
         GameData.getInstance().setSelectedColor(selectedColor);
+        GameData.getInstance().setCurrentCar(cars.get(0));
 
         ScreenManager.switchScreen(ScreenType.GAME);
     }

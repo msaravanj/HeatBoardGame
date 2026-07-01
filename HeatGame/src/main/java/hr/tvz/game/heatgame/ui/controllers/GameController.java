@@ -1,5 +1,6 @@
 package hr.tvz.game.heatgame.ui.controllers;
 
+import hr.tvz.game.heatgame.engine.GameEngine;
 import hr.tvz.game.heatgame.enums.CarColor;
 import hr.tvz.game.heatgame.model.Car;
 import hr.tvz.game.heatgame.model.TrackPoint;
@@ -26,8 +27,6 @@ public class GameController implements Initializable {
     @FXML
     private Canvas canvas;
 
-    private GameData gameData;
-
     private List<Car> cars;
 
     private List<TrackPoint> trackPoints;
@@ -49,40 +48,15 @@ public class GameController implements Initializable {
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        TrackUtils.drawTrack(gc);
-
-        gameData = GameData.getInstance();
-        cars = gameData.getCars() != null ? gameData.getCars() : new ArrayList<>();
-
         Map<CarColor, Image> carImages = new HashMap<>();
         for (CarColor color : CarColor.values()) {
             carImages.put(color, new Image(getClass().getResourceAsStream(color.path)));
         }
 
-        List<TrackPoint> points = TrackUtils.getFields();
+        TrackUtils.drawTrack(gc);
 
-        for (int i = 0; i < cars.size(); i++) {
-            Car car = cars.get(i);
-            Image carImage = carImages.get(car.getColor());
-            int fieldIndex = 46 - (i / 2);
-            int positionInField = i % 2;
-
-            TrackPoint basePoint = points.get(fieldIndex);
-            double x = basePoint.getX();
-            double y = basePoint.getY();
-
-            if (positionInField == 0) {
-                y -= 45;
-            } else {
-                y -= 5;
-            }
-
-            gc.save();
-            gc.translate(x, y);
-            gc.rotate(90);
-            gc.drawImage(carImage, 0, 0, 50, 50);
-            gc.restore();
-        }
+        GameEngine gameEngine = new GameEngine(gc, carImages);
+        gameEngine.startGame();
     }
 
     @Override

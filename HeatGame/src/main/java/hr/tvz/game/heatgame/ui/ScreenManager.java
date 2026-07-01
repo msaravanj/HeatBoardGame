@@ -33,8 +33,13 @@ public class ScreenManager {
     }
 
     public void loadScreens() throws IOException {
-
+        // Load most screens at startup but avoid eagerly loading the GAME screen
+        // because its start logic expects GameData to be initialized by the setup screen.
         for (ScreenType screenType : ScreenType.values()) {
+            if (screenType == ScreenType.GAME) {
+                //  load game lazily when actually switching to it
+                continue;
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource(screenType.getFxmlPath()));
             Parent root = loader.load();
             scenes.put(screenType, new Scene(root));
@@ -42,12 +47,25 @@ public class ScreenManager {
         }
     }
 
+    private static void loadScreen(ScreenType screenType) throws IllegalArgumentException {
+        try {
+            FXMLLoader loader = new FXMLLoader(ScreenManager.class.getResource(screenType.getFxmlPath()));
+            Parent root = loader.load();
+            scenes.put(screenType, new Scene(root));
+            controllers.put(screenType, loader.getController());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to load screen: " + screenType, e);
+        }
+    }
+
     public static void switchScreen(ScreenType screenType) {
 
         Scene scene = scenes.get(screenType);
 
+        // lazy-load the requested screen if it wasn't preloaded
         if (scene == null) {
-            throw new IllegalArgumentException("Screen not loaded: " + screenType);
+            loadScreen(screenType);
+            scene = scenes.get(screenType);
         }
 
         stage.setScene(scene);

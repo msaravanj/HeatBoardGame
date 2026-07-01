@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Data
 @Getter
@@ -17,7 +18,8 @@ public class GameData {
     private int numberOfCars;
     private CarColor selectedColor;
     private String playerName;
-    private List<Car> cars;
+    private List<Car> cars = new ArrayList<>();
+    private Car currentCar;
 
     private GameData() {}
 
