@@ -19,7 +19,7 @@ public class GameData {
     private CarColor selectedColor;
     private String playerName;
     private List<Car> cars = new ArrayList<>();
-    private Car currentCar;
+    private int currentCarIndex;
 
     private GameData() {}
 

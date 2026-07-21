@@ -10,14 +10,17 @@ public class TrackUtils {
 
     private static final double FIELD_WIDTH = 34;
     private static final double DESIRED_FIELD_LENGTH = 55;
-    private static List<TrackPoint> path;
-    private static List<TrackPoint> fields;
+    private static final int TARGET_FIELD_COUNT = 47;
     private static int separatorCounter = 0;
 
-    public static void drawTrack(GraphicsContext gc) {
+    private TrackUtils() {
+    }
+
+    public static List<TrackPoint> drawTrack(GraphicsContext gc) {
+        separatorCounter = 0;
         drawBorders(gc);
         drawCenterLine(gc);
-        drawFieldSeparators(gc);
+        return drawFieldSeparators(gc);
     }
 
     private static void drawBorders(GraphicsContext gc) {
@@ -87,17 +90,18 @@ public class TrackUtils {
         gc.setLineDashes();
     }
 
-     private static void drawFieldSeparators(GraphicsContext gc) {
+      private static List<TrackPoint> drawFieldSeparators(GraphicsContext gc) {
 
           List<TrackPoint> centerPath = buildCenterPath();
-          path = new ArrayList<>();
-          fields = new ArrayList<>();
+          List<TrackPoint> path = new ArrayList<>();
+          List<TrackPoint> fields = new ArrayList<>();
 
           double totalLength = calculateLength(centerPath);
+          if (totalLength <= 0) {
+              return fields;
+          }
 
-          int fieldCount = (int) (totalLength / DESIRED_FIELD_LENGTH);
-
-          double fieldLength = totalLength / fieldCount;
+          double fieldLength = totalLength / TARGET_FIELD_COUNT;
 
           gc.setStroke(Color.WHITE);
           gc.setLineWidth(2);
@@ -110,7 +114,7 @@ public class TrackUtils {
           double travelled = 0;
           double targetDistance = fieldLength;
 
-           for (int i = 1; i < centerPath.size() && path.size() < 47; i++) {
+           for (int i = 1; i < centerPath.size() && path.size() < TARGET_FIELD_COUNT; i++) {
 
                TrackPoint prev = centerPath.get(i - 1);
                TrackPoint curr = centerPath.get(i);
@@ -119,7 +123,7 @@ public class TrackUtils {
                        curr.getX() - prev.getX(),
                        curr.getY() - prev.getY());
 
-               while (travelled + segmentLength >= targetDistance && path.size() < 47) {
+               while (travelled + segmentLength >= targetDistance && path.size() < TARGET_FIELD_COUNT) {
 
                    double ratio = (targetDistance - travelled) / segmentLength;
 
@@ -141,8 +145,7 @@ public class TrackUtils {
          List<TrackPoint> rotatedPoints = new ArrayList<>(fields.size());
          rotatedPoints.addAll(fields.subList(8, fields.size()));
          rotatedPoints.addAll(fields.subList(0, 8));
-         fields.clear();
-         fields.addAll(rotatedPoints);
+         return rotatedPoints;
       }
 
      private static void drawSeparator(
@@ -283,7 +286,4 @@ public class TrackUtils {
          return length;
      }
 
-     public static List<TrackPoint> getFields() {
-        return fields;
-     }
 }

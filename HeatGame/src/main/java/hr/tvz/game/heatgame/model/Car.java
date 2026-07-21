@@ -12,6 +12,7 @@ public class Car {
     private CarColor color;
     private int speed;
     private int trackPosition;
+    private int positionInTrack;
 
     private List<Card> hand;
     private List<Card> playedCards;
@@ -25,5 +26,6 @@ public class Car {
         this.color = color;
         speed = 0;
         trackPosition = 0;
+        positionInTrack = 0;
     }
 }

@@ -4,19 +4,14 @@ import hr.tvz.game.heatgame.enums.CarColor;
 import hr.tvz.game.heatgame.model.Car;
 import hr.tvz.game.heatgame.model.GameData;
 import hr.tvz.game.heatgame.model.TrackPoint;
+import hr.tvz.game.heatgame.util.GameEngineUtils;
 import hr.tvz.game.heatgame.util.TrackUtils;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
-@Getter
-@Setter
 public class GameEngine {
 
     private GameData gameData;
@@ -26,7 +21,7 @@ public class GameEngine {
 
     public GameEngine(GraphicsContext gc, Map<CarColor, Image> carImagesMap) {
         this.gameData = GameData.getInstance();
-        this.fields = TrackUtils.getFields();
+        this.fields = TrackUtils.drawTrack(gc);
         this.gc = gc;
         this.carImagesMap = carImagesMap;
 
@@ -35,40 +30,89 @@ public class GameEngine {
     public void startGame(){
         List<Car> cars = gameData.getCars();
         for (int i = 0; i < cars.size(); i++) {
-            Car car = cars.get(i);
-            Image carImage = carImagesMap.get(car.getColor());
             int fieldIndex = 46 - (i / 2);
             int positionInField = i % 2;
-
-            TrackPoint basePoint = fields.get(fieldIndex);
-            double x = basePoint.getX();
-            double y = basePoint.getY();
-
-            if (positionInField == 0) {
-                y -= 45;
-            } else {
-                y -= 5;
-            }
-
-            gc.save();
-            gc.translate(x, y);
-            gc.rotate(90);
-            gc.drawImage(carImage, 0, 0, 50, 50);
-            gc.restore();
+            cars.get(i).setTrackPosition(fieldIndex);
+            cars.get(i).setPositionInTrack(positionInField);
         }
+        gameData.setCurrentCarIndex(0);
+        redrawBoard();
     }
 
     public void moveCar(Car car, int speed){
-
+        car.setSpeed(speed);
+        checkFieldAvailability(car);
+        redrawBoard();
+        System.out.println("Car " + car.getColor() + " moved to position: " + fields.get(car.getTrackPosition()).getX() + ", " + fields.get(car.getTrackPosition()).getY());
+        nextPlayer();
     }
 
     public boolean isGameOver() {
         return false;
     }
 
-    public void nextPlayer(){}
-
-    public void setCarsToStartingPositions() {
-
+    private void nextPlayer(){
+        if (gameData.getCurrentCarIndex() >= gameData.getCars().size() - 1) {
+            gameData.setCurrentCarIndex(0);
+        } else {
+            gameData.setCurrentCarIndex(gameData.getCurrentCarIndex() + 1);
+        }
     }
+
+    private void checkFieldAvailability(Car car) {
+        int newFieldIndex = (car.getTrackPosition() + car.getSpeed()) % fields.size();
+        checkInnerOuter(newFieldIndex, car);
+    }
+
+    private void checkInnerOuter(int fieldIndex, Car car) {
+
+        boolean track0Taken = false;
+        boolean track1Taken = false;
+
+        for (Car c : gameData.getCars()) {
+            if (c == car) {
+                continue;
+            }
+
+            if (c.getTrackPosition() == fieldIndex) {
+                if (c.getPositionInTrack() == 0) {
+                    track0Taken = true;
+                } else {
+                    track1Taken = true;
+                }
+            }
+        }
+
+        if (!track0Taken) {
+            car.setTrackPosition(fieldIndex);
+            car.setPositionInTrack(0);
+            return;
+        }
+
+        if (!track1Taken) {
+            car.setTrackPosition(fieldIndex);
+            car.setPositionInTrack(1);
+            return;
+        }
+
+        // oba zauzeta, probaj prethodno polje
+        checkInnerOuter((fieldIndex - 1 + fields.size()) % fields.size(), car);
+    }
+
+    private void redrawBoard() {
+        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+        gc.setFill(javafx.scene.paint.Color.GREEN);
+        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
+        fields = TrackUtils.drawTrack(gc);
+
+        for (Car car : gameData.getCars()) {
+            TrackPoint basePoint = fields.get(car.getTrackPosition());
+            double x = basePoint.getX();
+            double y = basePoint.getY();
+
+            GameEngineUtils.fixCarOrientation(gc, car, x, y, carImagesMap);
+        }
+    }
+
 }
