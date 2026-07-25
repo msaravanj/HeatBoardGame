@@ -2,6 +2,7 @@ package hr.tvz.game.heatgame.model;
 
 import hr.tvz.game.heatgame.enums.CarColor;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class Car {
     private int speed;
     private int trackPosition;
     private int positionInTrack;
+    private int loop;
+    private int rank;
 
     private List<Card> hand;
     private List<Card> playedCards;
@@ -27,5 +30,17 @@ public class Car {
         speed = 0;
         trackPosition = 0;
         positionInTrack = 0;
+        loop = 0;
+        rank = -1;
+    }
+
+    @Override
+    public String toString() {
+        if (rank == -1) {
+            return name;
+        } else {
+            return rank + ". " + name;
+        }
+
     }
 }

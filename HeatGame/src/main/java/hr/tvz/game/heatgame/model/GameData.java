@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Data
-@Getter
-@Setter
 public class GameData {
 
     private static final GameData instance = new GameData();

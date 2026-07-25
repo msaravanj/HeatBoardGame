@@ -5,6 +5,7 @@ import hr.tvz.game.heatgame.model.Car;
 import hr.tvz.game.heatgame.model.GameData;
 import hr.tvz.game.heatgame.model.TrackPoint;
 import hr.tvz.game.heatgame.util.GameEngineUtils;
+import hr.tvz.game.heatgame.util.RankingTableUtils;
 import hr.tvz.game.heatgame.util.TrackUtils;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -43,7 +44,6 @@ public class GameEngine {
         car.setSpeed(speed);
         checkFieldAvailability(car);
         redrawBoard();
-        System.out.println("Car " + car.getColor() + " moved to position: " + fields.get(car.getTrackPosition()).getX() + ", " + fields.get(car.getTrackPosition()).getY());
         nextPlayer();
     }
 
@@ -60,6 +60,9 @@ public class GameEngine {
     }
 
     private void checkFieldAvailability(Car car) {
+        if (car.getTrackPosition() + car.getSpeed() >= fields.size()) {
+            car.setLoop(car.getLoop() + 1);
+        }
         int newFieldIndex = (car.getTrackPosition() + car.getSpeed()) % fields.size();
         checkInnerOuter(newFieldIndex, car);
     }

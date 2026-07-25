@@ -2,20 +2,22 @@ package hr.tvz.game.heatgame.ui.controllers;
 
 import hr.tvz.game.heatgame.engine.GameEngine;
 import hr.tvz.game.heatgame.enums.CarColor;
+import hr.tvz.game.heatgame.model.Car;
+import hr.tvz.game.heatgame.util.RankingTableUtils;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import java.net.URL;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class GameController implements Initializable {
 
@@ -23,9 +25,13 @@ public class GameController implements Initializable {
     private static final double DEFAULT_HEIGHT = 500.0;
 
     GameEngine gameEngine;
+    ObservableList<Car> observableList;
 
     @FXML
     private Canvas canvas;
+
+    @FXML
+    private ListView<Car> rankingListView;
 
     @FXML
     private Button moveCarButton;
@@ -34,7 +40,10 @@ public class GameController implements Initializable {
     private ChoiceBox<Integer> choiceBox;
 
     public void onMoveCarClicked(){
-            gameEngine.moveCar(gameEngine.getGameData().getCars().get(gameEngine.getGameData().getCurrentCarIndex()), (Integer) choiceBox.getValue());
+        gameEngine.moveCar(gameEngine.getGameData().getCars().get(gameEngine.getGameData().getCurrentCarIndex()), (Integer) choiceBox.getValue());
+        RankingTableUtils.rerankTable(observableList);
+        RankingTableUtils.setItemColor(rankingListView);
+
     }
 
     public void refresh() {
@@ -72,5 +81,11 @@ public class GameController implements Initializable {
         choiceBox.getItems().addAll(1,2,3,4,5,6,7,8,9,10);
         choiceBox.setValue(1);
         refresh();
+        rankingListView.setOrientation(Orientation.HORIZONTAL);
+        List<Car> carList = new ArrayList(gameEngine.getGameData().getCars());
+        observableList = FXCollections.observableList(carList);
+        rankingListView.setItems(observableList);
+        RankingTableUtils.setItemColor(rankingListView);
+
     }
 }
