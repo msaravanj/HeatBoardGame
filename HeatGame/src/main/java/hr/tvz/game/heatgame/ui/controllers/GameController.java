@@ -5,16 +5,19 @@ import hr.tvz.game.heatgame.enums.CarColor;
 import hr.tvz.game.heatgame.model.Car;
 import hr.tvz.game.heatgame.util.RankingTableUtils;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Orientation;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.*;
@@ -31,7 +34,10 @@ public class GameController implements Initializable {
     private Canvas canvas;
 
     @FXML
-    private ListView<Car> rankingListView;
+    private HBox rankingHBox;
+
+    @FXML
+    private HBox orderNumberHBox;
 
     @FXML
     private Button moveCarButton;
@@ -42,7 +48,6 @@ public class GameController implements Initializable {
     public void onMoveCarClicked(){
         gameEngine.moveCar(gameEngine.getGameData().getCars().get(gameEngine.getGameData().getCurrentCarIndex()), (Integer) choiceBox.getValue());
         RankingTableUtils.rerankTable(observableList);
-        RankingTableUtils.setItemColor(rankingListView);
 
     }
 
@@ -75,17 +80,44 @@ public class GameController implements Initializable {
         gameEngine.startGame();
     }
 
+    private void refreshRanking() {
+        rankingHBox.getChildren().clear();
+
+        for (Car car : observableList) {
+            Label label = new Label(car.getName());
+            label.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 16));
+            label.setStyle("-fx-background-color: " + car.getColor());
+            label.setPrefSize(130, 30);
+            label.setAlignment(Pos.CENTER);
+            label.setBorder(Border.stroke(Color.BLACK));
+
+            rankingHBox.getChildren().add(label);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         moveCarButton = new Button("Move Car");
         choiceBox.getItems().addAll(1,2,3,4,5,6,7,8,9,10);
         choiceBox.setValue(1);
         refresh();
-        rankingListView.setOrientation(Orientation.HORIZONTAL);
         List<Car> carList = new ArrayList(gameEngine.getGameData().getCars());
         observableList = FXCollections.observableList(carList);
-        rankingListView.setItems(observableList);
-        RankingTableUtils.setItemColor(rankingListView);
+        observableList.addListener((ListChangeListener<Car>) change -> refreshRanking());
+        refreshRanking();
+
+        List<String> numberList = new ArrayList<>(Arrays.asList("1st place", "2nd place", "3rd place", "4th place", "5th place", "6th place"));
+        ObservableList<String> obsList = FXCollections.observableList(numberList);
+        for (int i = 0; i < carList.size(); i++) {
+            Label label = new Label(obsList.get(i));
+            label.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 16));
+            label.setPrefSize(130, 30);
+            label.setAlignment(Pos.CENTER);
+            label.setBorder(Border.stroke(Color.BLACK));
+            label.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+            orderNumberHBox.getChildren().add(label);
+        }
+
 
     }
 }
