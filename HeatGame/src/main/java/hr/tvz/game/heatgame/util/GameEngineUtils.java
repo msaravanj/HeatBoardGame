@@ -119,6 +119,5 @@ public class GameEngineUtils {
         gc.rotate(rotation);
         gc.drawImage(carImagesMap.get(car.getColor()), 0, 0, 50, 50);
         gc.restore();
-
     }
 }

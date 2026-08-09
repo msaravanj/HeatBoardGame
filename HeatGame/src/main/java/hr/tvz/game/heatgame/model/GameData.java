@@ -18,6 +18,7 @@ public class GameData {
     private String playerName;
     private List<Car> cars = new ArrayList<>();
     private int currentCarIndex;
+    private int numberOfLoops;
 
     private GameData() {}
 

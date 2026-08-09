@@ -8,7 +8,11 @@ import hr.tvz.game.heatgame.util.GameEngineUtils;
 import hr.tvz.game.heatgame.util.RankingTableUtils;
 import hr.tvz.game.heatgame.util.TrackUtils;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import lombok.Data;
 import java.util.*;
 
@@ -40,15 +44,13 @@ public class GameEngine {
         redrawBoard();
     }
 
+
     public void moveCar(Car car, int speed){
         car.setSpeed(speed);
         checkFieldAvailability(car);
         redrawBoard();
         nextPlayer();
-    }
 
-    public boolean isGameOver() {
-        return false;
     }
 
     private void nextPlayer(){

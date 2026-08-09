@@ -35,6 +35,10 @@ public class GameSetupController implements Initializable {
     private ChoiceBox<Integer> choiceNumberOfPlayersBox;
 
     @FXML
+    private ChoiceBox<Integer> choiceNumberOfLoops;
+
+
+    @FXML
     private void onStartGameButtonClick() {
         // Gather setup data
         String playerName = playerNameField != null ? playerNameField.getText() : "Player 1";
@@ -44,6 +48,9 @@ public class GameSetupController implements Initializable {
         // Read number of players from UI control (range 2-6)
         int numberOfPlayers = choiceNumberOfPlayersBox != null && choiceNumberOfPlayersBox.getValue() != null
                 ? choiceNumberOfPlayersBox.getValue() : 4;
+
+        int numberOfLoops = choiceNumberOfLoops != null && choiceNumberOfLoops.getValue() != null
+                ? choiceNumberOfLoops.getValue() : 2;
 
         // Build list of cars: first car uses chosen name/color; remaining are auto-generated
         List<Car> cars = new ArrayList<>();
@@ -65,7 +72,7 @@ public class GameSetupController implements Initializable {
         GameData.getInstance().setPlayerName(playerName);
         GameData.getInstance().setSelectedColor(selectedColor);
         GameData.getInstance().setCurrentCarIndex(0);
-
+        GameData.getInstance().setNumberOfLoops(numberOfLoops);
         ScreenManager.switchScreen(ScreenType.GAME);
     }
 
@@ -94,6 +101,14 @@ public class GameSetupController implements Initializable {
             choiceNumberOfPlayersBox.setItems(numbers);
             if (!numbers.isEmpty()) {
                 choiceNumberOfPlayersBox.getSelectionModel().selectFirst();
+            }
+        }
+
+        if (choiceNumberOfLoops != null) {
+            ObservableList<Integer> numbers = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+            choiceNumberOfLoops.setItems(numbers);
+            if (!numbers.isEmpty()) {
+                choiceNumberOfLoops.getSelectionModel().selectFirst();
             }
         }
     }

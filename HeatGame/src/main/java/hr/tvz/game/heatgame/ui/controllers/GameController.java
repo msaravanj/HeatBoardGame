@@ -48,7 +48,7 @@ public class GameController implements Initializable {
     public void onMoveCarClicked(){
         gameEngine.moveCar(gameEngine.getGameData().getCars().get(gameEngine.getGameData().getCurrentCarIndex()), (Integer) choiceBox.getValue());
         RankingTableUtils.rerankTable(observableList);
-
+        RankingTableUtils.checkIsGameOver(gameEngine.getGameData());
     }
 
     public void refresh() {
