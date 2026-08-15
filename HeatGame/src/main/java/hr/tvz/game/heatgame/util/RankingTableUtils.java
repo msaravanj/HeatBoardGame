@@ -1,16 +1,24 @@
 package hr.tvz.game.heatgame.util;
 
+import hr.tvz.game.heatgame.engine.GameEngine;
 import hr.tvz.game.heatgame.enums.ScreenType;
 import hr.tvz.game.heatgame.model.Car;
 import hr.tvz.game.heatgame.model.GameData;
 import hr.tvz.game.heatgame.ui.ScreenManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
 
 public class RankingTableUtils {
 

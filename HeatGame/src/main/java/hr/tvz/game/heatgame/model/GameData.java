@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 @Data
-public class GameData {
+public class GameData implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private static final GameData instance = new GameData();
 

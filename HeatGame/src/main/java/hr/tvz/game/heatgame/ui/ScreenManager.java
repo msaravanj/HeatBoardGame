@@ -1,6 +1,7 @@
 package hr.tvz.game.heatgame.ui;
 
 import hr.tvz.game.heatgame.enums.ScreenType;
+import hr.tvz.game.heatgame.model.GameData;
 import hr.tvz.game.heatgame.ui.controllers.GameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -75,6 +76,32 @@ public class ScreenManager {
             Object controller = controllers.get(ScreenType.GAME);
             if (controller instanceof GameController gameController) {
                 gameController.refresh();
+                gameController.updateRankingsUI();
+            }
+        }
+
+        stage.show();
+    }
+
+    public static void switchScreen(ScreenType screenType, GameData gameData) {
+
+        Scene scene = scenes.get(screenType);
+
+        // lazy-load the requested screen if it wasn't preloaded
+        if (scene == null) {
+            loadScreen(screenType);
+            scene = scenes.get(screenType);
+        }
+
+        stage.setScene(scene);
+        stage.setResizable(false);
+
+        if (screenType == ScreenType.GAME) {
+            Object controller = controllers.get(ScreenType.GAME);
+            if (controller instanceof GameController gameController) {
+                gameController.getGameEngine().setGameData(gameData);
+                gameController.refresh();
+                gameController.updateRankingsUI();
             }
         }
 

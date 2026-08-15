@@ -8,12 +8,9 @@ import hr.tvz.game.heatgame.util.GameEngineUtils;
 import hr.tvz.game.heatgame.util.RankingTableUtils;
 import hr.tvz.game.heatgame.util.TrackUtils;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import lombok.Data;
+
 import java.util.*;
 
 @Data
@@ -104,7 +101,7 @@ public class GameEngine {
         checkInnerOuter((fieldIndex - 1 + fields.size()) % fields.size(), car);
     }
 
-    private void redrawBoard() {
+    public void redrawBoard() {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         gc.setFill(javafx.scene.paint.Color.GREEN);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());

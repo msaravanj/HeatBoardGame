@@ -4,10 +4,12 @@ import hr.tvz.game.heatgame.enums.CarColor;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class Car {
+public class Car implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String name;
     private CarColor color;
