@@ -1,10 +1,5 @@
 package hr.tvz.game.heatgame.model;
 
-import java.io.Serializable;
+import hr.tvz.game.heatgame.enums.CardType;
 
-public abstract class Card implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private String name;
-
-}
+public record Card(CardType type, int value, String imagePath){}

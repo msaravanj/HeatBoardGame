@@ -22,8 +22,8 @@ public class Car implements Serializable {
     private List<Card> hand;
     private List<Card> playedCards;
     private List<Card> discardedCards;
-    private List<HeatCard> engineCards;
-    private List<StressCard> stressCards;
+    private List<Card> engineCards;
+    private List<Card> stressCards;
     private List<Card> activeDeck;
 
     public Car(String name, CarColor color){
