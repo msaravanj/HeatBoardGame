@@ -22,6 +22,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import lombok.Data;
@@ -61,6 +62,12 @@ public class GameController implements Initializable {
 
     @FXML
     private MenuItem exitGameMenuItem;
+
+    @FXML
+    private HBox handHbox;
+
+    @FXML
+    private ImageView handCard1;
 
 
     public void onMoveCarClicked(){
@@ -142,6 +149,7 @@ public class GameController implements Initializable {
         choiceBox.setValue(1);
         refresh();
         updateRankingsUI();
+        handCard1.setImage(new Image(getClass().getResourceAsStream("/hr/tvz/game/heatgame/images/speed1.jpg")));
     }
 
     public void updateRankingsUI() {
